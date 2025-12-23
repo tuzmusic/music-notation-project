@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { StaffLines } from "./components/StaffLines.tsx";
 import { glyphs } from "./glyphs.ts";
+import { Glyph } from "./components/atoms/Glyph.tsx";
 
 const CenterWrapper = styled.div`
     display: flex;
@@ -11,14 +12,11 @@ const CenterWrapper = styled.div`
 `
 
 function TrebleClef({ x, yOffset }: { x: number, yOffset: number }) {
-  return <text
-    x={x}
-    y={30 + yOffset}
-    fontFamily="Bravura"
-    fontSize={40}
-  >
-    {glyphs.trebleClef}
-  </text>;
+  return (
+    <Glyph x={x} y={30 + yOffset} fontSize={40}>
+      {glyphs.trebleClef}
+    </Glyph>
+  );
 }
 
 function Staff({ yOffSet = 0 }) {
