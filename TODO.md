@@ -1,1 +1,1 @@
-[ ] Use some kind of margin instead of yOffset
+[X] Use some kind of margin instead of yOffset

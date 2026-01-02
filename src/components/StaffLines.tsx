@@ -6,10 +6,8 @@ function StaffLine({ y }: { y: number }) {
   )
 }
 
-export function StaffLines({ yOffset = 0 }: {
-  yOffset: number
-}) {
+export function StaffLines() {
   return Array.from({ length: config.staff.lines }, (_, i) =>
-    <StaffLine y={i * config.staff.baseSpaceSize + yOffset}/>
+    <StaffLine y={i * config.staff.baseSpaceSize}/>
   )
 }

@@ -1,11 +1,11 @@
 import { TrebleClef } from "./clefs/TrebleClef.tsx";
 import { StaffLines } from "./StaffLines.tsx";
 
-export function Staff({ yOffset = 0 }) {
+export function Staff() {
   return (
     <>
-      <TrebleClef x={10} yOffset={yOffset}/>
-      <StaffLines yOffset={yOffset}/>
+      <TrebleClef x={10} />
+      <StaffLines />
     </>
   )
 }
