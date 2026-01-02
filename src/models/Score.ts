@@ -1,38 +1,55 @@
-type Time = {
+export type Time = {
   num: number
   denom: 16 // todo: support other resolutions
 }
 
-type StaffId = string // symbol?
+export type StaffId = string // symbol?
 
-class Clef {
+export class Clef {
   constructor(public readonly name: string,
     // bottom line = 0, lowest space = 1
     public readonly fromBottom: number) {
   }
 }
 
-class TrebleClef extends Clef {
+export class TrebleClef extends Clef {
   constructor() {
     super('treble', 2)
   }
 }
 
-class MusicEvent {
+export class MusicEvent {
   private staffId: StaffId
   private startLocation: Time
 }
 
-class ClefEvent extends MusicEvent {
+export class ClefEvent extends MusicEvent {
   private event: Clef
 }
 
 
-class Staff {
-  private events: MusicEvent[]
-  private id: StaffId // symbol?
+export class Staff {
+  private events: MusicEvent[] = []
+  private readonly id: StaffId = crypto.randomUUID()// symbol?
+
+
+  public addEvent(event: MusicEvent) {
+    this.events.push(event)
+  }
+
+  public getEvents() {
+    return this.events
+  }
 }
 
 export class Score {
-  private staves: Staff[]
+  private staves: Staff[] = []
+
+  public addStaff(staff: Staff) {
+    this.staves.push(staff);
+  }
+
+  public getStaves() {
+    return this.staves;
+  }
 }
