@@ -21,49 +21,30 @@ export function createNoteNumberToPitchMap() {
     }
   }
 
-  for (let i = 65; i < 128; i++) {
-    incrementPitch()
-    map.set(i, [`${noteLetters[currentLetterIndex]}${currentOctave}`])
-  }
-
-  return map
-
-  for (let i = 65; i < 128; i++) {
-    // if (noSharp.includes(getCurrentLetter())) {
-    //   currentLetterIndex++
-    // }
-
-
-    const prev = map.get(i - 1)?.[0] // sharp will come before flat
+  for (let i = 65; i < 64 + 12; i++) {
+    // we still need to check the previous entry to see if it was a sharp or flat
+    // because we're not going to track that (or are we, I guess?)
+    const prev = map.get(i - 1)?.[0] // sharp will come before flat in the array
     if (!prev) throw new Error(`nothing in map for ${i - 1}`)
-
     const prevNote = prev.slice(0, -1)
-    const prevNoteNameIndex = noteLetters.indexOf(prev.slice(0, 1));
 
-    let thisPitch = noteLetters[prevNoteNameIndex + 1]
+    const theseNotes = []
 
-    if (!thisPitch) {
-      currentOctave += 1
-      thisPitch = noteLetters[0]
+    const prevNoteNatural = prevNote.length === 1;
+    const prevNoteCanBeSharped = !noSharp.includes(prevNote);
+    if (prevNoteNatural && prevNoteCanBeSharped) {
+      // write sharp that natural's letter, and flat for the next one
+      // write the sharp
+      theseNotes.push(`${getCurrentLetter()}#${currentOctave}`)
+      incrementPitch()
+      // write the flat
+      theseNotes.push(`${getCurrentLetter()}b${currentOctave}`)
+    } else {
+      incrementPitch()
+      theseNotes.push(`${getCurrentLetter()}${currentOctave}`)
     }
 
-    // prev is NATURAL
-    if (prevNote.length === 1) {
-      const theseNotes = []
-      if (!noSharp.includes(thisPitch)) {
-        theseNotes.push(`${prevNote}#${currentOctave}`)
-      }
-      map.set(i,
-        [`${prevNote}#${currentOctave}`]
-      )
-    }
-
-    // get prev pitch
-    // if natural,
-    //   set(i, prev+"#"), unless prev is E or B, in which case set (i, next)
-    //   and set (i, next+"b")
-    // else
-    //   set(i, next)
+    map.set(i, theseNotes)
   }
 
   return map

@@ -5,6 +5,7 @@ import { useScore } from "../contexts/useScore.tsx";
 export function Score() {
     const { score } = useScore();
     const staves = score.getStaves();
+    console.clear()
 
     return (
         // should this be in the parent svg element?
@@ -12,7 +13,6 @@ export function Score() {
             {staves.map((staff) => (
                 <Staff key={staff.id} staff={staff} />
             ))}
-
         </g>
     );
 }
