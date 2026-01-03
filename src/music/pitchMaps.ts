@@ -5,11 +5,11 @@ const noFlat = ['C', 'F']
 export function createNoteNumberToPitchMap() {
   const map = new Map<number, string[]>
 
-  let currentOctave = 4 // TODO NEXT: ALSO TRACK PITCH (instead of using previous pitch)
-  let currentLetterIndex = noteLetters.indexOf('E')
+  let currentOctave = -1 // TODO NEXT: ALSO TRACK PITCH (instead of using previous pitch)
+  let currentLetterIndex = 0
   const getCurrentLetter = () => noteLetters[currentLetterIndex]
 
-  map.set(64, [`${noteLetters[currentLetterIndex]}${currentOctave}`])
+  map.set(0, [`${noteLetters[currentLetterIndex]}${currentOctave}`])
 
   function incrementPitch() {
     if (!noteLetters[currentLetterIndex + 1]) {
@@ -20,10 +20,10 @@ export function createNoteNumberToPitchMap() {
     }
   }
 
-  for (let i = 65; i < 64 + 12; i++) {
+  for (let i = 1; i < 127; i++) {
     const prev = map.get(i - 1)?.[0] // sharp will come before flat in the array
     if (!prev) throw new Error(`nothing in map for ${i - 1}`)
-    const prevNote = prev.slice(0, -1)
+    const prevNote = prev.slice(0, currentOctave < 0 ? -2 : -1)
 
     const theseNotes: string[]  = []
 
@@ -32,7 +32,6 @@ export function createNoteNumberToPitchMap() {
 
     const writeWithAccidental = (acc: '#' | 'b' | null) =>
       theseNotes.push(`${getCurrentLetter()}${acc ?? ''}${currentOctave}`)
-
 
     if (prevNoteNatural && prevNoteCanBeSharped) {
       writeWithAccidental('#')
