@@ -2,7 +2,8 @@ import { config } from "../config.tsx";
 
 function StaffLine({ y }: { y: number }) {
   return (
-    <line x1={0} x2={"100%"} y1={y} y2={y} stroke={"black"} strokeWidth={config.staff.baseSize}/>
+    <line x1={0} x2={"100%"} y1={y} y2={y}
+          stroke={"black"} strokeWidth={config.staff.baseLineSize}/>
   )
 }
 
