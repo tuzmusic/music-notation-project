@@ -12,8 +12,7 @@ export function createNoteNumberToPitchMap() {
   map.set(64, [`${noteLetters[currentLetterIndex]}${currentOctave}`])
 
   function incrementPitch() {
-    let nextNoteLetter = noteLetters[currentLetterIndex + 1];
-    if (!nextNoteLetter) {
+    if (!noteLetters[currentLetterIndex + 1]) {
       currentOctave++
       currentLetterIndex = 0
     } else {
@@ -22,26 +21,31 @@ export function createNoteNumberToPitchMap() {
   }
 
   for (let i = 65; i < 64 + 12; i++) {
-    // we still need to check the previous entry to see if it was a sharp or flat
-    // because we're not going to track that (or are we, I guess?)
     const prev = map.get(i - 1)?.[0] // sharp will come before flat in the array
     if (!prev) throw new Error(`nothing in map for ${i - 1}`)
     const prevNote = prev.slice(0, -1)
 
-    const theseNotes = []
+    const theseNotes: string[]  = []
 
     const prevNoteNatural = prevNote.length === 1;
     const prevNoteCanBeSharped = !noSharp.includes(prevNote);
+
+    const writeWithAccidental = (acc: '#' | 'b' | null) =>
+      theseNotes.push(`${getCurrentLetter()}${acc ?? ''}${currentOctave}`)
+
+
     if (prevNoteNatural && prevNoteCanBeSharped) {
-      // write sharp that natural's letter, and flat for the next one
-      // write the sharp
-      theseNotes.push(`${getCurrentLetter()}#${currentOctave}`)
+      writeWithAccidental('#')
       incrementPitch()
-      // write the flat
-      theseNotes.push(`${getCurrentLetter()}b${currentOctave}`)
+      writeWithAccidental('b')
     } else {
-      incrementPitch()
-      theseNotes.push(`${getCurrentLetter()}${currentOctave}`)
+      // if prevNoteCanBeSharped (say, prevNote = F) currentNote is already the next note! (G)
+      // when we sharped that note we already incremented the pitch
+      // TODO: this logic is a little confusing and too stateful
+      if (!prevNoteCanBeSharped) {
+        incrementPitch()
+      }
+      writeWithAccidental(null)
     }
 
     map.set(i, theseNotes)
