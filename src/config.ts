@@ -1,4 +1,4 @@
-import { MusicEventType } from "./models/Score.ts";
+import { MusicEventType } from "./models/MusicEvent.ts";
 
 export const config = {
   page: {

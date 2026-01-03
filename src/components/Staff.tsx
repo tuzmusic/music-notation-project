@@ -1,9 +1,10 @@
 import { StaffLines } from "./StaffLines.tsx";
 import type { Staff as StaffModel } from "../models/Staff.ts";
-import { MusicEvent, Score } from "../models/Score.ts";
+import { Score } from "../models/Score.ts";
 import { SystemStart as SystemStartModel } from "../models/SystemStart.ts";
 import { useScore } from "../contexts/useScore.tsx";
 import { renderEvents } from "./renderers/renderEvents.tsx";
+import { MusicEvent } from "../models/MusicEvent.ts";
 
 // no useMemo because we're using React Compiler
 // todo (possibly): move this to Staff#getEventsByTime,

@@ -1,7 +1,8 @@
-import { Score, type Time } from "../models/Score.ts";
+import { Score } from "../models/Score.ts";
 import { Staff } from "../models/Staff.ts";
 import { TrebleClef } from "../models/Clefs/TrebleClef.ts";
 import { ClefEvent } from "../models/MusicEvents/ClefEvent.ts";
+import type { Time } from "../models/MusicEvent.ts";
 
 export function makeInitialScore(): Score {
   const score = new Score();

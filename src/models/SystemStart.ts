@@ -1,4 +1,5 @@
-import { MusicEvent, MusicEventType } from "./Score";
+
+import { MusicEvent, MusicEventType } from "./MusicEvent.ts";
 
 
 export class SystemStart extends MusicEvent {

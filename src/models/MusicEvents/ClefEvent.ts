@@ -1,5 +1,6 @@
 import { Clef } from "../Clefs/Clef.ts";
-import { MusicEvent, MusicEventType, type StaffId, type Time } from "../Score.ts";
+import type { StaffId } from "../Staff.ts";
+import { MusicEvent, MusicEventType, type Time } from "../MusicEvent.ts";
 
 export class ClefEvent extends MusicEvent {
   readonly musicEventType = MusicEventType.Clef;

@@ -1,7 +1,8 @@
-import { MusicEvent, MusicEventType } from "../../models/Score.ts";
+
 import { spacing, unknownSpacing as fallbackSpacing } from "../../config.ts";
 import { Barline } from "../Barline.tsx";
 import { TrebleClef } from "../clefs/TrebleClef.tsx";
+import { MusicEvent, MusicEventType } from "../../models/MusicEvent.ts";
 
 export function renderEvents(eventsByTime: Map<string, MusicEvent[]>) {
   let x = 0
@@ -14,6 +15,7 @@ export function renderEvents(eventsByTime: Map<string, MusicEvent[]>) {
         if (lastEvent) {
           x += spacing[lastEvent.musicEventType]?.to[event.musicEventType] ?? fallbackSpacing
         }
+        console.log(event.musicEventType, lastEvent?.musicEventType)
         lastEvent = event
 
         if (event.musicEventType === MusicEventType.SystemStart) {
