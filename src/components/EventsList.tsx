@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { useScore } from "../contexts/ScoreContext.tsx";
-import { MusicEvent, ClefEvent } from "../models/Score.ts";
 
 const EventsContainer = styled.div`
     display: flex;
@@ -62,20 +61,6 @@ export function EventsList() {
     const { score } = useScore();
     const events = score.getEvents();
 
-    const getEventType = (event: MusicEvent): string => {
-        if (event instanceof ClefEvent) {
-            return "ClefEvent";
-        }
-        return "MusicEvent";
-    };
-
-    const getEventDetails = (event: MusicEvent): string => {
-        if (event instanceof ClefEvent) {
-            return event.clef.name;
-        }
-        return "-";
-    };
-
     return (
         <EventsContainer>
             <EventsTitle>Events ({events.length})</EventsTitle>
@@ -93,15 +78,18 @@ export function EventsList() {
                         </tr>
                     </TableHeader>
                     <TableBody>
-                        {events.map((event, index) => (
-                            <TableRow key={index}>
-                                <TableCell>{event.id.substring(0, 3)}</TableCell>
-                                <TableCell>{getEventType(event)}</TableCell>
-                                <TableCell>{event.staffId.substring(0, 3)}</TableCell>
-                                <TableCell>{event.startLocation.num}/{event.startLocation.denom}</TableCell>
-                                <TableCell>{getEventDetails(event)}</TableCell>
-                            </TableRow>
-                        ))}
+                        {events.map((_event, index) => {
+                            const event = _event.toEventListRow()
+                            return (
+                                <TableRow key={events[index].id}>
+                                    <TableCell>{event.id.substring(0, 3)}</TableCell>
+                                    <TableCell>{event.type}</TableCell>
+                                    <TableCell>{event.staffId.substring(0, 3)}</TableCell>
+                                    <TableCell>{event.time.num}/{event.time.denom}</TableCell>
+                                    <TableCell>{event.details}</TableCell>
+                                </TableRow>
+                            );
+                        })}
                     </TableBody>
                 </EventsTable>
             )}

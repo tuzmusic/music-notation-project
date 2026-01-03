@@ -18,21 +18,39 @@ export class TrebleClef extends Clef {
   }
 }
 
-export class MusicEvent {
+export abstract class MusicEvent {
   public readonly id: string = crypto.randomUUID();
+  abstract readonly musicEventType: string;
   constructor(
     public readonly staffId: StaffId,
     public readonly startLocation: Time
   ) {}
+
+  toEventListRow() {
+    return {
+      id: this.id,
+      type: this.musicEventType,
+      staffId: this.staffId,
+      time: this.startLocation,
+      details: this.getEventDetails(),
+    };
+  }
+
+  abstract getEventDetails(): string;
 }
 
 export class ClefEvent extends MusicEvent {
+  readonly musicEventType = "ClefEvent";
   constructor(
     staffId: StaffId,
     startLocation: Time,
     public readonly clef: Clef
   ) {
     super(staffId, startLocation);
+  }
+
+  getEventDetails(): string {
+    return this.clef.name;
   }
 }
 
