@@ -7,7 +7,7 @@ import { Barline } from "./Barline.tsx";
 import { spacing, unknownSpacing as fallbackSpacing } from "../config.ts";
 import { TrebleClef } from "./clefs/TrebleClef.tsx";
 
-// no useMemo because we're using React Compiler 
+// no useMemo because we're using React Compiler
 // todo (possibly): move this to Staff#getEventsByTime,
 //  and call that from a useMemo in the component
 function getStaffEvents(score: Score, staffId: string) {
@@ -38,7 +38,7 @@ function getEventComponents(eventsByTime: Map<string, MusicEvent[]>) {
   let x = 0
   let lastEvent: MusicEvent | null = null
 
-  // no useMemo because we're using React Compiler 
+  // no useMemo because we're using React Compiler
   return Array.from(eventsByTime.entries()).map(
     ([_timeKey, eventsAtTime]) => {
       return eventsAtTime.map((event) => {
@@ -48,9 +48,9 @@ function getEventComponents(eventsByTime: Map<string, MusicEvent[]>) {
         lastEvent = event
 
         if (event.musicEventType === MusicEventType.SystemStart) {
-          return <Barline x={x}/>
+          return <Barline key={event.id} x={x}/>
         } else if (event.musicEventType === MusicEventType.Clef) {
-          return <TrebleClef x={x}/> // todo: polymorphic clef component
+          return <TrebleClef key={event.id} x={x}/> // todo: polymorphic clef component
         }
       })
     }

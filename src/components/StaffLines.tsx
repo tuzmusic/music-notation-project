@@ -9,6 +9,6 @@ function StaffLine({ y }: { y: number }) {
 
 export function StaffLines() {
   return Array.from({ length: config.staff.lines }, (_, i) =>
-    <StaffLine y={i * config.staff.baseSpaceSize}/>
+    <StaffLine key={i} y={i * config.staff.baseSpaceSize}/>
   )
 }
