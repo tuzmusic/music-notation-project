@@ -1,6 +1,7 @@
 import { StaffLines } from "./StaffLines.tsx";
 import type { Staff as StaffModel } from "../models/Staff.ts";
-import { MusicEvent, MusicEventType, Score, SystemStart as SystemStartModel } from "../models/Score.ts";
+import { MusicEvent, MusicEventType, Score } from "../models/Score.ts";
+import { SystemStart as SystemStartModel } from "../models/SystemStart.ts";
 import { useScore } from "../contexts/useScore.tsx";
 import { Barline } from "./Barline.tsx";
 import { spacing, unknownSpacing as fallbackSpacing } from "../config.ts";

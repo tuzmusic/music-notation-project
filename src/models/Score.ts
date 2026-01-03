@@ -33,15 +33,7 @@ export abstract class MusicEvent {
     };
   }
 
-  abstract getEventDetails(): string;
-}
-
-export class SystemStart extends MusicEvent {
-  readonly musicEventType = MusicEventType.SystemStart;
-
-  getEventDetails(): string {
-    return "Start of Line";
-  }
+  abstract getEventDetails(): string | null;
 }
 
 export class Score {
