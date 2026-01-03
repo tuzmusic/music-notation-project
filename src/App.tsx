@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { Score } from "./components/Score.tsx";
 import { EventsList } from "./components/EventsList.tsx";
-import { useScore } from "./contexts/useScore.tsx";
 
 const CenterWrapper = styled.div`
     display: flex;
@@ -19,8 +18,6 @@ const AppContainer = styled.div`
 `
 
 function App() {
-  useScore();
-
   return (
     <AppContainer>
       <CenterWrapper>
