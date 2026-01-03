@@ -1,18 +1,13 @@
-const noteLetters = ['C', 'D', 'E', 'F', 'G', 'A', 'B']
-const noSharp = ['B', 'E']
-const noFlat = ['C', 'F']
-
 export function createNoteNumberToPitchMap() {
-  const map = new Map<number, string[]>
+  const noteLetters = ['C', 'D', 'E', 'F', 'G', 'A', 'B']
+  const noSharp = ['B', 'E']
 
-  let currentOctave = -1 // TODO NEXT: ALSO TRACK PITCH (instead of using previous pitch)
+  let currentOctave = -1
   let currentLetterIndex = 0
   const getCurrentLetter = () => noteLetters[currentLetterIndex]
 
-  map.set(0, [`${noteLetters[currentLetterIndex]}${currentOctave}`])
-
   function incrementPitch() {
-    if (!noteLetters[currentLetterIndex + 1]) {
+    if (currentLetterIndex >= noteLetters.length - 1) {
       currentOctave++
       currentLetterIndex = 0
     } else {
@@ -20,12 +15,16 @@ export function createNoteNumberToPitchMap() {
     }
   }
 
-  for (let i = 1; i < 127; i++) {
-    const prev = map.get(i - 1)?.[0] // sharp will come before flat in the array
-    if (!prev) throw new Error(`nothing in map for ${i - 1}`)
-    const prevNote = prev.slice(0, currentOctave < 0 ? -2 : -1)
+  const map = new Map<number, string[]>([[0, [`${noteLetters[currentLetterIndex]}${currentOctave}`]]])
 
-    const theseNotes: string[]  = []
+  for (let i = 1; i < 127; i++) {
+    const prevEntry = map.get(i - 1)?.[0] // sharp will come before flat in the array
+    if (!prevEntry) throw new Error(`nothing in map for ${i - 1}`)
+
+    const prevNote = prevEntry.match(/[A-G][#b]?/)?.[0]
+    if (!prevNote) throw new Error(`invalid note format: ${prevEntry}`)
+
+    const theseNotes: string[] = []
 
     const prevNoteNatural = prevNote.length === 1;
     const prevNoteCanBeSharped = !noSharp.includes(prevNote);
