@@ -17,7 +17,7 @@ export function createNoteNumberToPitchMap() {
 
   const map = new Map<number, string[]>([[0, [`${noteLetters[currentLetterIndex]}${currentOctave}`]]])
 
-  for (let i = 1; i < 127; i++) {
+  for (let i = 1; i <= 127; i++) {
     const prevEntry = map.get(i - 1)?.[0] // sharp will come before flat in the array
     if (!prevEntry) throw new Error(`nothing in map for ${i - 1}`)
 
