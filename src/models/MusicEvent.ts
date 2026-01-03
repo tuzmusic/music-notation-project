@@ -37,3 +37,13 @@ export abstract class MusicEvent {
 
   abstract getEventDetails(): string | null;
 }
+
+export abstract class DurationEvent extends MusicEvent {
+  constructor(
+    staff: Staff | null,
+    public readonly startLocation: Time,
+    public readonly endLocation: Time
+  ) {
+    super(staff, startLocation)
+  }
+}
