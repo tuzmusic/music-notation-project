@@ -1,4 +1,4 @@
-import { config } from "../config.tsx";
+import { config } from "../config.ts";
 
 function StaffLine({ y }: { y: number }) {
   return (

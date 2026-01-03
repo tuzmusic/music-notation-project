@@ -11,7 +11,7 @@ export abstract class MusicEvent {
   public readonly id: string = crypto.randomUUID();
   abstract readonly musicEventType: string;
   constructor(
-    public readonly staffId: StaffId,
+    public readonly staffId: StaffId | null,
     public readonly startLocation: Time
   ) { }
 
@@ -26,6 +26,14 @@ export abstract class MusicEvent {
   }
 
   abstract getEventDetails(): string;
+}
+
+export class StartOfLine extends MusicEvent {
+  readonly musicEventType = "StartOfLine";
+
+  getEventDetails(): string {
+    return "Start of Line";
+  }
 }
 
 export class Score {

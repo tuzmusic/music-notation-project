@@ -1,4 +1,4 @@
-import { config } from "../config.tsx";
+import { config } from "../config.ts";
 
 export function StartOfLine() {
   const staffHeight = (config.staff.lines - 1) * config.staff.baseSpaceSize;

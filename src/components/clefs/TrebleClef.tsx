@@ -1,6 +1,6 @@
 import { Glyph } from "../atoms/Glyph.tsx";
 import { glyphs } from "../../glyphs.ts";
-import { config } from "../../config.tsx";
+import { config } from "../../config.ts";
 
 export function TrebleClef({ x }: { x: number }) {
   const linesFromBottom = 2
