@@ -19,31 +19,31 @@ export class TrebleClef extends Clef {
 }
 
 export class MusicEvent {
-  private staffId: StaffId
-  private startLocation: Time
+  public readonly id: string = crypto.randomUUID();
+  constructor(
+    public readonly staffId: StaffId,
+    public readonly startLocation: Time
+  ) {}
 }
 
 export class ClefEvent extends MusicEvent {
-  private event: Clef
+  constructor(
+    staffId: StaffId,
+    startLocation: Time,
+    public readonly clef: Clef
+  ) {
+    super(staffId, startLocation);
+  }
 }
 
 
 export class Staff {
-  private events: MusicEvent[] = []
-  private readonly id: StaffId = crypto.randomUUID()// symbol?
-
-
-  public addEvent(event: MusicEvent) {
-    this.events.push(event)
-  }
-
-  public getEvents() {
-    return this.events
-  }
+  public readonly id: StaffId = crypto.randomUUID()// symbol?
 }
 
 export class Score {
   private staves: Staff[] = []
+  private events: MusicEvent[] = []
 
   public addStaff(staff: Staff) {
     this.staves.push(staff);
@@ -51,5 +51,13 @@ export class Score {
 
   public getStaves() {
     return this.staves;
+  }
+
+  public addEvent(event: MusicEvent) {
+    this.events.push(event);
+  }
+
+  public getEvents() {
+    return this.events;
   }
 }
