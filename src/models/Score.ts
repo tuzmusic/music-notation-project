@@ -7,9 +7,17 @@ export type Time = {
 
 export type StaffId = string // symbol?
 
+export const MusicEventType = {
+  SystemStart: 'systemStart',
+  Clef: 'clef',
+  Notehead: 'notehead'
+} as const;
+
+export type MusicEventType = typeof MusicEventType[keyof typeof MusicEventType];
+
 export abstract class MusicEvent {
   public readonly id: string = crypto.randomUUID();
-  abstract readonly musicEventType: string;
+  abstract readonly musicEventType: MusicEventType;
   constructor(
     public readonly staffId: StaffId | null,
     public readonly startLocation: Time
@@ -29,7 +37,7 @@ export abstract class MusicEvent {
 }
 
 export class SystemStart extends MusicEvent {
-  readonly musicEventType = "SystemStart";
+  readonly musicEventType = MusicEventType.SystemStart;
 
   getEventDetails(): string {
     return "Start of Line";

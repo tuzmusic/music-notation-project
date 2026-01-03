@@ -1,3 +1,5 @@
+import { MusicEvent, MusicEventType } from "./models/Score.ts";
+
 export const config = {
   page: {
     topMargin: 40
@@ -13,20 +15,24 @@ export const config = {
 } as const
 
 
-export const noteSpacing = {
-  systemStart: {
+export const unknownSpacing = 2
+export const spacing: Partial<Record<MusicEventType,
+  { to: Partial<Record<MusicEventType, number>> }
+>>
+  = {
+  [MusicEventType.SystemStart]: {
     to: {
-      clef: 2
+      [MusicEventType.Clef]: 10
     }
   },
-  clef: {
+  [MusicEventType.Clef]: {
     to: {
-      notehead: 4
+      [MusicEventType.Notehead]: 4
     }
   },
-  notehead: {
+  [MusicEventType.Notehead]: {
     to: {
-      notehead: 2
+      [MusicEventType.Notehead]: 2
     }
   }
 }
