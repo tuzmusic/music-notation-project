@@ -51,5 +51,3 @@ export function createNoteNumberToPitchMap() {
 
   return map
 }
-
-console.log(createNoteNumberToPitchMap())
