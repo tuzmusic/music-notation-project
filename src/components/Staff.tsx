@@ -5,11 +5,11 @@ import { SystemStart as SystemStartModel } from "../models/Score.ts";
 import { useScore } from "../contexts/useScore.tsx";
 import { SystemStart } from "./SystemStart.tsx";
 
-export function Staff({ staff }: { staff: StaffModel }) {
+function useStaffEvents(staffId: string) {
   const { score } = useScore()
   const events = useMemo(() => {
       const staffEvents = score.getEvents().filter(
-        (event) => event.staffId === staff.id
+        (event) => event.staffId === staffId
       );
 
       const eventsSorted = staffEvents.sort((a, b) => {
@@ -30,8 +30,16 @@ export function Staff({ staff }: { staff: StaffModel }) {
       eventsByTime["0/16"] = [new SystemStartModel(null, { num: 0, denom: 16 })];
 
       return eventsByTime
-    }, [score, staff.id]
+    }, [score, staffId]
   )
+
+  return events
+}
+
+
+
+export function Staff({ staff }: { staff: StaffModel }) {
+  const events = useStaffEvents(staff.id)
 
   return (
     <>
