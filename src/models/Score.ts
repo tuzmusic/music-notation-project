@@ -1,16 +1,16 @@
-import { Staff } from "./Staff.ts";
+import { Staff, type StaffId } from "./Staff.ts";
 import { MusicEvent } from "./MusicEvent.ts";
 
 export class Score {
-  private staves: Staff[] = []
+  private staves = new Map<StaffId, Staff>()
   private events: MusicEvent[] = []
 
   public addStaff(staff: Staff) {
-    this.staves.push(staff);
+    this.staves.set(staff.id, staff);
   }
 
   public getStaves() {
-    return this.staves;
+    return Array.from(this.staves.values());
   }
 
   public addEvent(event: MusicEvent) {
