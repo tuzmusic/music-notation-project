@@ -7,12 +7,12 @@ import type { Time } from "../models/MusicEvent.ts";
 export function makeInitialScore(): Score {
   const score = new Score();
   const staff = new Staff();
-  const staffId = staff.id;
+  score.addStaff(staff);
+
   const trebleClef = new TrebleClef();
   const startLocation: Time = { num: 1, denom: 16 };
-  const clefEvent = new ClefEvent(staffId, startLocation, trebleClef);
+  const clefEvent = new ClefEvent(staff, startLocation, trebleClef);
   score.addEvent(clefEvent);
 
-  score.addStaff(staff);
   return score;
 }

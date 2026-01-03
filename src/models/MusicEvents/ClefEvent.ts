@@ -1,16 +1,16 @@
 import { Clef } from "../Clefs/Clef.ts";
-import type { StaffId } from "../Staff.ts";
+import type { Staff } from "../Staff.ts";
 import { MusicEvent, MusicEventType, type Time } from "../MusicEvent.ts";
 
 export class ClefEvent extends MusicEvent {
   readonly musicEventType = MusicEventType.Clef;
 
   constructor(
-    staffId: StaffId,
-    startLocation: Time,
+    public readonly staff: Staff,
+    public readonly startLocation: Time,
     public readonly clef: Clef
   ) {
-    super(staffId, startLocation);
+    super(staff, startLocation);
   }
 
   getEventDetails(): string {

@@ -1,4 +1,4 @@
-import type { StaffId } from "./Staff.ts";
+import type { Staff, StaffId } from "./Staff.ts";
 
 export type Time = {
   num: number
@@ -15,12 +15,14 @@ export type MusicEventType = typeof MusicEventType[keyof typeof MusicEventType];
 
 export abstract class MusicEvent {
   public readonly id: string = crypto.randomUUID();
+  public readonly staffId: StaffId | null;
   abstract readonly musicEventType: MusicEventType;
 
   constructor(
-    public readonly staffId: StaffId | null,
+    staff: Staff | null,
     public readonly startLocation: Time
   ) {
+    this.staffId = staff?.id ?? null;
   }
 
   toEventListRow() {
