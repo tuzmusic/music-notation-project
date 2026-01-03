@@ -4,8 +4,8 @@ import { StaffLines } from "./StaffLines.tsx";
 export function Staff() {
   return (
     <>
-      <TrebleClef x={10} />
       <StaffLines />
+      <TrebleClef x={10} />
     </>
   )
 }

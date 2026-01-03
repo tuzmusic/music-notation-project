@@ -5,26 +5,13 @@ export type Time = {
 
 export type StaffId = string // symbol?
 
-export class Clef {
-  constructor(public readonly name: string,
-    // bottom line = 0, lowest space = 1
-    public readonly fromBottom: number) {
-  }
-}
-
-export class TrebleClef extends Clef {
-  constructor() {
-    super('treble', 2)
-  }
-}
-
 export abstract class MusicEvent {
   public readonly id: string = crypto.randomUUID();
   abstract readonly musicEventType: string;
   constructor(
     public readonly staffId: StaffId,
     public readonly startLocation: Time
-  ) {}
+  ) { }
 
   toEventListRow() {
     return {
@@ -38,22 +25,6 @@ export abstract class MusicEvent {
 
   abstract getEventDetails(): string;
 }
-
-export class ClefEvent extends MusicEvent {
-  readonly musicEventType = "ClefEvent";
-  constructor(
-    staffId: StaffId,
-    startLocation: Time,
-    public readonly clef: Clef
-  ) {
-    super(staffId, startLocation);
-  }
-
-  getEventDetails(): string {
-    return this.clef.name;
-  }
-}
-
 
 export class Staff {
   public readonly id: StaffId = crypto.randomUUID()// symbol?

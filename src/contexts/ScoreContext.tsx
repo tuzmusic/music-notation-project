@@ -1,5 +1,7 @@
 import { createContext, useContext } from 'react';
-import { ClefEvent, Score, Staff, TrebleClef, type Time } from '../models/Score';
+import { Score, Staff, type Time } from '../models/Score';
+import { TrebleClef } from '../models/Clefs/TrebleClef';
+import { ClefEvent } from "../models/MusicEvents/ClefEvent.ts";
 
 interface ScoreContextType {
     score: Score;
