@@ -1,3 +1,5 @@
+import { Staff } from "./Staff.ts";
+
 export type Time = {
   num: number
   denom: 16 // todo: support other resolutions
@@ -24,10 +26,6 @@ export abstract class MusicEvent {
   }
 
   abstract getEventDetails(): string;
-}
-
-export class Staff {
-  public readonly id: StaffId = crypto.randomUUID()// symbol?
 }
 
 export class Score {
