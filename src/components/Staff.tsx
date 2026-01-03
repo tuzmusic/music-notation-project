@@ -1,7 +1,7 @@
 import { StaffLines } from "./StaffLines.tsx";
 import type { Staff as StaffModel } from "../models/Staff.ts";
 import { Score } from "../models/Score.ts";
-import { SystemStart as SystemStartModel } from "../models/SystemStart.ts";
+import { SystemStart } from "../models/SystemStart.ts";
 import { useScore } from "../contexts/useScore.tsx";
 import { renderEvents } from "./renderers/renderEvents.tsx";
 import { MusicEvent } from "../models/MusicEvent.ts";
@@ -13,6 +13,8 @@ function getStaffEvents(score: Score, staffId: string) {
   const staffEvents = score.getEvents().filter(
     (event) => event.staffId === staffId
   );
+
+  staffEvents.push(new SystemStart(null, { num: 0, denom: 16 }))
 
   const eventsSorted = staffEvents.sort((a, b) => {
     const timeA = a.startLocation.num / a.startLocation.denom;
@@ -26,9 +28,6 @@ function getStaffEvents(score: Score, staffId: string) {
     map.set(timeKey, eventsAtThisTime);
     return map;
   }, new Map<string, MusicEvent[]>());
-
-  const systemStart = new SystemStartModel(null, { num: 0, denom: 16 });
-  eventsByTime.set("0/16", [systemStart, ...eventsByTime.get("0/16") ?? []])
 
   return eventsByTime
 }
