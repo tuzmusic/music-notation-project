@@ -3,36 +3,35 @@ import type { Staff as StaffModel } from "../models/Staff.ts";
 import { useMemo } from "react";
 import { MusicEvent, MusicEventType, SystemStart as SystemStartModel } from "../models/Score.ts";
 import { useScore } from "../contexts/useScore.tsx";
-import { SystemStart } from "./SystemStart.tsx";
 import { Barline } from "./Barline.tsx";
-import { spacing, unknownSpacing } from "../config.ts";
+import { spacing, unknownSpacing as fallbackSpacing } from "../config.ts";
 import { TrebleClef } from "./clefs/TrebleClef.tsx";
 
 function useStaffEvents(staffId: string) {
   const { score } = useScore()
   const events = useMemo(() => {
-      const staffEvents = score.getEvents().filter(
-        (event) => event.staffId === staffId
-      );
+    const staffEvents = score.getEvents().filter(
+      (event) => event.staffId === staffId
+    );
 
-      const eventsSorted = staffEvents.sort((a, b) => {
-        const timeA = a.startLocation.num / a.startLocation.denom;
-        const timeB = b.startLocation.num / b.startLocation.denom;
-        return timeA - timeB;
-      });
+    const eventsSorted = staffEvents.sort((a, b) => {
+      const timeA = a.startLocation.num / a.startLocation.denom;
+      const timeB = b.startLocation.num / b.startLocation.denom;
+      return timeA - timeB;
+    });
 
-      const eventsByTime = eventsSorted.reduce((map, event) => {
-        const timeKey = `${event.startLocation.num}/${event.startLocation.denom}`;
-        const eventsAtThisTime = map.get(timeKey)?.concat(event) ?? [event];
-        map.set(timeKey, eventsAtThisTime);
-        return map;
-      }, new Map<string, MusicEvent[]>());
+    const eventsByTime = eventsSorted.reduce((map, event) => {
+      const timeKey = `${event.startLocation.num}/${event.startLocation.denom}`;
+      const eventsAtThisTime = map.get(timeKey)?.concat(event) ?? [event];
+      map.set(timeKey, eventsAtThisTime);
+      return map;
+    }, new Map<string, MusicEvent[]>());
 
-      const systemStart = new SystemStartModel(null, { num: 0, denom: 16 });
-      eventsByTime.set("0/16", [systemStart, ...eventsByTime.get("0/16") ?? []])
+    const systemStart = new SystemStartModel(null, { num: 0, denom: 16 });
+    eventsByTime.set("0/16", [systemStart, ...eventsByTime.get("0/16") ?? []])
 
-      return eventsByTime
-    }, [score, staffId]
+    return eventsByTime
+  }, [score, staffId]
   )
 
   return events
@@ -40,22 +39,21 @@ function useStaffEvents(staffId: string) {
 
 function getEventComponents(eventsByTime: Map<string, MusicEvent[]>) {
   let x = 0
-  return Array.from(eventsByTime.entries()).map(
-    ([timeKey, eventsAtTime]) => {
-      const [num, denom] = timeKey.split("/").map(Number);
-      return eventsAtTime.map((event, i) => {
-        let component: React.ReactElement | null = null
-        if (event.musicEventType === MusicEventType.SystemStart) {
-          component = <Barline x={x}/>
-        } else if (event.musicEventType === MusicEventType.Clef) {
-          component = <TrebleClef x={x}/>
-        }
+  let lastEvent: MusicEvent | null = null
 
-        const nextEvent = eventsAtTime[i + 1] // JS does not throw out-of-bounds exceptions
-        if (nextEvent) {
-          x += spacing[event.musicEventType]?.to[nextEvent.musicEventType] ?? unknownSpacing
+  return Array.from(eventsByTime.entries()).map(
+    ([_timeKey, eventsAtTime]) => {
+      return eventsAtTime.map((event) => {
+        if (lastEvent) {
+          x += spacing[lastEvent.musicEventType]?.to[event.musicEventType] ?? fallbackSpacing
         }
-        return component
+        lastEvent = event
+
+        if (event.musicEventType === MusicEventType.SystemStart) {
+          return <Barline x={x} />
+        } else if (event.musicEventType === MusicEventType.Clef) {
+          return <TrebleClef x={x} />
+        }
       })
     }
   )
@@ -67,7 +65,7 @@ export function Staff({ staff }: { staff: StaffModel }) {
   const eventComponents = useMemo(() => getEventComponents(eventsByTime), [eventsByTime])
   return (
     <>
-      <StaffLines/>
+      <StaffLines />
       {eventComponents}
     </>
   )
