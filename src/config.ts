@@ -1,4 +1,4 @@
-import { MusicEvent, MusicEventType } from "./models/Score.ts";
+import { MusicEventType } from "./models/Score.ts";
 
 export const config = {
   page: {
@@ -10,19 +10,20 @@ export const config = {
     lines: 5
   },
   barline: {
-    baseThickness: 3
+    baseThickness: 2.5
   }
 } as const
 
 
 export const unknownSpacing = 2
-export const spacing: Partial<Record<MusicEventType,
+export const spacing: Partial<
+  Record<MusicEventType,
   { to: Partial<Record<MusicEventType, number>> }
 >>
   = {
   [MusicEventType.SystemStart]: {
     to: {
-      [MusicEventType.Clef]: 10
+      [MusicEventType.Clef]: 6
     }
   },
   [MusicEventType.Clef]: {

@@ -23,19 +23,14 @@ function useStaffEvents(staffId: string) {
 
       const eventsByTime = eventsSorted.reduce((map, event) => {
         const timeKey = `${event.startLocation.num}/${event.startLocation.denom}`;
-        if (!map.has(timeKey)) map.set(timeKey, []);
-        map.get(timeKey)?.push(event);
-
+        const eventsAtThisTime = map.get(timeKey)?.concat(event) ?? [event];
+        map.set(timeKey, eventsAtThisTime);
         return map;
       }, new Map<string, MusicEvent[]>());
 
       const systemStart = new SystemStartModel(null, { num: 0, denom: 16 });
-      const firstEvents = eventsByTime.get("0/16")
-      if (firstEvents) {
-        firstEvents.unshift(systemStart)
-      } else {
-        eventsByTime.set("0/16", [systemStart])
-      }
+      eventsByTime.set("0/16", [systemStart, ...eventsByTime.get("0/16") ?? []])
+
       return eventsByTime
     }, [score, staffId]
   )
@@ -45,21 +40,22 @@ function useStaffEvents(staffId: string) {
 
 function getEventComponents(eventsByTime: Map<string, MusicEvent[]>) {
   let x = 0
-  console.log(eventsByTime)
-  return Array.from(eventsByTime.entries()).map(([timeKey, eventsAtTime]) => {
+  return Array.from(eventsByTime.entries()).map(
+    ([timeKey, eventsAtTime]) => {
       const [num, denom] = timeKey.split("/").map(Number);
       return eventsAtTime.map((event, i) => {
+        let component: React.ReactElement | null = null
+        if (event.musicEventType === MusicEventType.SystemStart) {
+          component = <Barline x={x}/>
+        } else if (event.musicEventType === MusicEventType.Clef) {
+          component = <TrebleClef x={x}/>
+        }
+
         const nextEvent = eventsAtTime[i + 1] // JS does not throw out-of-bounds exceptions
         if (nextEvent) {
           x += spacing[event.musicEventType]?.to[nextEvent.musicEventType] ?? unknownSpacing
         }
-        console.log(event.musicEventType, x, timeKey)
-        switch (event.musicEventType) {
-          case MusicEventType.SystemStart:
-            return <Barline x={x}/>
-          case MusicEventType.Clef:
-            return <TrebleClef x={x}/>
-        }
+        return component
       })
     }
   )
@@ -72,9 +68,7 @@ export function Staff({ staff }: { staff: StaffModel }) {
   return (
     <>
       <StaffLines/>
-      {
-        eventComponents
-      }
+      {eventComponents}
     </>
   )
 }

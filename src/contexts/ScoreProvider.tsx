@@ -9,7 +9,7 @@ function makeInitialScore(): Score {
     const staff = new Staff();
     const staffId = staff.id;
     const trebleClef = new TrebleClef();
-    const startLocation: Time = { num: 1, denom: 16 };
+    const startLocation: Time = { num: 0, denom: 16 };
     const clefEvent = new ClefEvent(staffId, startLocation, trebleClef);
     score.addEvent(clefEvent);
 
