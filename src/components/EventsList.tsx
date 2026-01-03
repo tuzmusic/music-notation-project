@@ -85,7 +85,7 @@ export function EventsList() {
                                 <TableRow key={events[index].id}>
                                     <TableCell>{event.id.substring(0, 3)}</TableCell>
                                     <TableCell>{event.type}</TableCell>
-                                    <TableCell>{event.staffId.substring(0, 3)}</TableCell>
+                                    <TableCell>{event.staffId?.substring(0, 3)}</TableCell>
                                     <TableCell>{event.time.num}/{event.time.denom}</TableCell>
                                     <TableCell>{event.details}</TableCell>
                                 </TableRow>

@@ -1,9 +1,9 @@
 import { StaffLines } from "./StaffLines.tsx";
 import type { Staff as StaffModel } from "../models/Staff.ts";
 import { useMemo } from "react";
-import { StartOfLine as StartOfLineModel } from "../models/Score.ts";
+import { SystemStart as SystemStartModel } from "../models/Score.ts";
 import { useScore } from "../contexts/useScore.tsx";
-import { StartOfLine } from "./StartOfLine.tsx";
+import { SystemStart } from "./SystemStart.tsx";
 
 export function Staff({ staff }: { staff: StaffModel }) {
   const { score } = useScore()
@@ -27,7 +27,7 @@ export function Staff({ staff }: { staff: StaffModel }) {
         return record;
       }, {} as Record<string, typeof staffEvents>);
 
-      eventsByTime["0/16"] = [new StartOfLineModel(null, { num: 0, denom: 16 })];
+      eventsByTime["0/16"] = [new SystemStartModel(null, { num: 0, denom: 16 })];
 
       return eventsByTime
     }, [score, staff.id]
@@ -41,8 +41,8 @@ export function Staff({ staff }: { staff: StaffModel }) {
             const [num, denom] = timeKey.split("/").map(Number);
             return eventsAtTime.map((event) => {
               switch (event.musicEventType) {
-                case 'StartOfLine':
-                  return <StartOfLine/>
+                case 'SystemStart':
+                  return <SystemStart/>
               }
             })
           }

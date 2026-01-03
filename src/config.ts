@@ -6,6 +6,9 @@ export const config = {
     baseLineSize: 1,
     baseSpaceSize: 10,
     lines: 5
+  },
+  barline: {
+    baseThickness: 3
   }
 } as const
 

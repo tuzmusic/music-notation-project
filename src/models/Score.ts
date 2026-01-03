@@ -28,8 +28,8 @@ export abstract class MusicEvent {
   abstract getEventDetails(): string;
 }
 
-export class StartOfLine extends MusicEvent {
-  readonly musicEventType = "StartOfLine";
+export class SystemStart extends MusicEvent {
+  readonly musicEventType = "SystemStart";
 
   getEventDetails(): string {
     return "Start of Line";
