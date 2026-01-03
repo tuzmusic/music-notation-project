@@ -2,9 +2,9 @@ export function createNoteNumberToPitchMap() {
   const noteLetters = ['C', 'D', 'E', 'F', 'G', 'A', 'B']
   const noSharp = ['B', 'E']
 
-  let currentOctave = -1
+  // MIDI note 0 is C-1
   let currentLetterIndex = 0
-  const getCurrentLetter = () => noteLetters[currentLetterIndex]
+  let currentOctave = -1
 
   function incrementPitch() {
     if (currentLetterIndex >= noteLetters.length - 1) {
@@ -29,8 +29,14 @@ export function createNoteNumberToPitchMap() {
     const prevNoteNatural = prevNote.length === 1;
     const prevNoteCanBeSharped = !noSharp.includes(prevNote);
 
-    const writeWithAccidental = (acc: '#' | 'b' | null) =>
-      theseNotes.push(`${getCurrentLetter()}${acc ?? ''}${currentOctave}`)
+    const writeWithAccidental = (acc: '#' | 'b' | null) => {
+      const elements = [
+        noteLetters[currentLetterIndex],
+        acc ?? '',
+        currentOctave
+      ]
+      theseNotes.push(elements.join(''))
+    }
 
     if (prevNoteNatural && prevNoteCanBeSharped) {
       writeWithAccidental('#')
@@ -40,6 +46,9 @@ export function createNoteNumberToPitchMap() {
       // if prevNoteCanBeSharped (say, prevNote = F) currentNote is already the next note! (G)
       // when we sharped that note we already incremented the pitch
       // TODO: this logic is a little confusing and too stateful
+      // do we want to write that next natural RIGHT after we increment the pitch??
+      // that would sorta mess with the incrementing so this would probably
+      // then be better as a while, or recursive call (probably a while)
       if (!prevNoteCanBeSharped) {
         incrementPitch()
       }
@@ -51,3 +60,5 @@ export function createNoteNumberToPitchMap() {
 
   return map
 }
+
+console.log(createNoteNumberToPitchMap())
