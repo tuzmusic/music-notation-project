@@ -1,5 +1,6 @@
 import styled from "styled-components";
-import { useScore } from "../contexts/ScoreContext.tsx";
+
+import { useScore } from "../contexts/useScore.tsx";
 
 const EventsContainer = styled.div`
     display: flex;
